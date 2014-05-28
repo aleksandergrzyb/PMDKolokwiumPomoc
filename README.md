@@ -47,10 +47,26 @@ Potem odczytujemy ten tekst w mapperze:
 	
 Powyższy tekst wykonujemy w funkcji setup()
 
-	protected void setup(Context context) throws IOException, InterruptedException {
-		};
+	protected void setup(Context context) throws IOException, InterruptedException 
+	{
+	
+	};
+	
+Czekamy na wykonanie prac:
+
+	if (job.waitForCompletion(true)) 
+	{
+		System.exit(job2.waitForCompletion(true) ? 0 : 1);
+	}
 	
 ## Mapper
+
+Przykład Mapper-a:
+
+	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable>
+	{
+
+	}
 	
 Tworzenie zmiennej ONE:
 
@@ -64,25 +80,50 @@ Przejście przez wszystkie słowa w wierszu:
 
 	String line = value.toString();
 	StringTokenizer itr = new StringTokenizer(line);
-	while (itr.hasMoreTokens()) {
+	while (itr.hasMoreTokens()) 
+	{
 		word.set(itr.nextToken());
 		contex.write(word, ONE);
 	}
 
 Przydatna funkcja do odczytania nazwy pliku:
 
-	protected static String getInputFileName(Context context) {
+	protected static String getInputFileName(Context context) 
+	{
 		FileSplit fs = (FileSplit) context.getInputSplit();
 		return fs.getPath().getName();
 	}
 
 ## Reducer
 
+Przykład Reducer-a:
+
+	public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException 
+	{
+				
+	}
+
 Przydatne przy iterowaniu typu Iterable:
 
-	while (values.iterator().hasNext()) {
-		values.iterator().next().get(); // Odczytanie wartości
+	while (values.iterator().hasNext()) 
+	{
+		values.iterator().next().get(); // Odczytanie wartosci
 	}	
+	
+Sum Reducer:
+
+	job.setReducerClass(IntSumReducer.class);
+	
+## String
+
+	line.length() // Dlugosc
+	line.substring(0, 3) // Czesc tekstu
+	String[] parts = line.trim().split("\\s+"); // Tekst podzielony przez znak w split
+	line.equals("t"); Sprawdzenie czy line zawiera znak "t"
+
+## Integer
+
+	Integer.parseInt(someInt) // Parsowanie String do Int
 
 
 
